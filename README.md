@@ -67,7 +67,11 @@ npm run test:headless : Rode os testes no modo headless (sem interface gráfica)
 Contribuições são sempre bem-vindas! Se você quiser melhorar esse projeto adicionando mais campos ao formulário, novos testes ou até integrando com backend, fique à vontade!
 
 1.Faça um fork do projeto
+
 2.Crie sua branch (git checkout -b feature/nova-feature)
+
 3.Commit suas mudanças (git commit -m 'feat: nova feature')
+
 4.Push na branch (git push origin feature/nova-feature)
+
 5.Abra um Pull Request
