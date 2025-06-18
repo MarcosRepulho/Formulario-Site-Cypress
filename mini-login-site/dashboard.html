@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+  <script>
+    // Se não estiver logado, redireciona para login
+    if (!localStorage.getItem("isLoggedIn")) {
+      window.location.href = "index.html";
+    }
+  </script>
+</head>
+<body>
+  <h1>Bem-vindo, usuário!</h1>
+  <p>Você está na página inicial do dashboard.</p>
+  <a href="index.html">Sair</a>
+</body>
+</html>

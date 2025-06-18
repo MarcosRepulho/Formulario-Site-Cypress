@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Formulário Avançado</title>
+ <link rel="stylesheet" href="style.css" />
+ <script src="https://unpkg.com/dayjs@1.11.10/dayjs.min.js"></script> 
+</head>
+<body>
+  <div class="form-container">
+    <h2>Formulário de Cadastro Avançado</h2>
+
+    <form id="registration-form">
+      <!-- Nome -->
+      <label for="name">Nome:</label>
+      <input type="text" id="name" name="name" placeholder="Seu nome completo" required />
+
+      <!-- Email -->
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" placeholder="seu@email.com" required />
+
+      <!-- Senha -->
+      <label for="password">Senha:</label>
+      <div class="password-group">
+        <input type="password" id="password" name="password" placeholder="Digite sua senha" required />
+        <button type="button" id="toggle-password">Mostrar</button>
+      </div>
+
+      <!-- Confirmar Senha -->
+      <label for="confirm-password">Confirmar Senha:</label>
+      <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirme sua senha" required />
+      <p id="password-match" class="hidden success">As senhas coincidem.</p>
+      <p id="password-mismatch" class="hidden error">As senhas não coincidem.</p>
+
+      <!-- Data de Nascimento -->
+      <label for="birthdate">Data de Nascimento:</label>
+      <input type="date" id="birthdate" name="birthdate" required />
+
+      <!-- Gênero -->
+      <label for="gender">Gênero:</label>
+      <select id="gender" name="gender">
+        <option value="">Selecione</option>
+        <option value="feminino">Feminino</option>
+        <option value="masculino">Masculino</option>
+        <option value="outro">Outro</option>
+        <option value="prefiro-nao-dizer">Prefiro não dizer</option>
+      </select>
+
+      <!-- Foto de Perfil -->
+      <label for="photo">Foto de perfil:</label>
+      <input type="file" id="photo" name="photo" accept="image/*" />
+
+      <!-- Termos -->
+      <label>
+        <input type="checkbox" id="terms" name="terms" required />
+        Concordo com os termos e condições
+      </label>
+
+      <!-- Botão de Envio -->
+      <button type="submit">Cadastrar</button>
+    </form>
+
+    <!-- Área de exibição dos dados -->
+    <div id="user-data" class="hidden">
+      <h3>Dados Cadastrados:</h3>
+      <p><strong>Nome:</strong> <span id="display-name"></span></p>
+      <p><strong>Email:</strong> <span id="display-email"></span></p>
+      <p><strong>Data de Nascimento:</strong> <span id="display-birthdate"></span></p>
+      <p><strong>Gênero:</strong> <span id="display-gender"></span></p>
+      <img id="display-photo" src="" alt="Foto do usuário" class="preview-photo hidden" />
+    </div>
+  </div>
+
+  <script>
+    // Mostrar/Ocultar senha
+    document.getElementById("toggle-password").addEventListener("click", () => {
+      const passwordInput = document.getElementById("password");
+      const toggleBtn = document.getElementById("toggle-password");
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleBtn.textContent = "Esconder";
+      } else {
+        passwordInput.type = "password";
+        toggleBtn.textContent = "Mostrar";
+      }
+    });
+
+    // Validar senhas em tempo real
+    document.getElementById("confirm-password").addEventListener("input", () => {
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirm-password").value;
+      const matchMessage = document.getElementById("password-match");
+      const mismatchMessage = document.getElementById("password-mismatch");
+
+      if (password === confirmPassword && confirmPassword !== "") {
+        matchMessage.classList.remove("hidden");
+        mismatchMessage.classList.add("hidden");
+      } else {
+        matchMessage.classList.add("hidden");
+        mismatchMessage.classList.remove("hidden");
+      }
+    });
+
+    // Exibir dados após submissão
+    document.getElementById("registration-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const birthdate = document.getElementById("birthdate").value;
+      const gender = document.getElementById("gender").value;
+      const photoFile = document.getElementById("photo").files[0];
+
+      // Preencher campos exibidos
+      document.getElementById("display-name").textContent = name;
+      document.getElementById("display-email").textContent = email;
+      document.getElementById("display-birthdate").textContent = dayjs(birthdate).format('DD/MM/YYYY');
+      document.getElementById("display-gender").textContent = formatGender(gender);
+
+      // Exibir foto se selecionada
+      const photoPreview = document.getElementById("display-photo");
+      if (photoFile) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          photoPreview.src = e.target.result;
+          photoPreview.classList.remove("hidden");
+        };
+        reader.readAsDataURL(photoFile);
+      }
+
+      document.getElementById("user-data").classList.remove("hidden");
+    });
+
+    function formatGender(gender) {
+      switch (gender) {
+        case 'feminino': return 'Feminino';
+        case 'masculino': return 'Masculino';
+        case 'outro': return 'Outro';
+        case 'prefiro-nao-dizer': return 'Prefiro não dizer';
+        default: return 'Não informado';
+      }
+    }
+  </script>
+</body>
+</html>
